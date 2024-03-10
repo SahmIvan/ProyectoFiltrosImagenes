@@ -31,16 +31,16 @@ import base64
 import io
 
 def test_view(request):
-    # Check if a filter is selected
+    # Verifica si un filtro fue seleccionado
     filter_name = request.GET.get('filter', None)
 
-    # Apply the selected filter or default filter
+    # aplica el filtro seleccionado
     if filter_name == 'smooth':
         output = models.testMethodFromModelPY()
     elif filter_name == 'reset':
         output = models.defaultMethodFromModelPY()
     else:
-        # Default behavior (no filter applied)
+        # Valor predeterminado al cargar la pagina
         output = models.defaultMethodFromModelPY()
 
     buffer = io.BytesIO()
