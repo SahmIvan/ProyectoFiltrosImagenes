@@ -21,70 +21,106 @@
             
 
 #         plt.show() 
-import matplotlib.pyplot as plt
-from PIL import Image
-import numpy as np
+# import matplotlib.pyplot as plt
+# from PIL import Image
+# import numpy as np
 
-imagen = Image.open("maxWallpaper.jpg")
+# imagen = Image.open("maxWallpaper.jpg")
 
-imagen_array = np.array(imagen)
+# imagen_array = np.array(imagen)
 
-# Definir el ruido tipo speckle
-noise = np.random.normal(0, 0.5, size=imagen_array.shape)
+# # Definir el ruido tipo speckle
+# noise = np.random.normal(0, 0.5, size=imagen_array.shape)
 
-# Agregar el ruido a la imagen
-noisy_image = imagen_array + imagen_array * noise
-# noisy_image = imagen_array
+# # Agregar el ruido a la imagen
+# noisy_image = imagen_array + imagen_array * noise
+# # noisy_image = imagen_array
 
-# Definir el kernel del filtro promediador
-kernel_size = 12
-#Filtro promediador
-kernel = np.ones((kernel_size, kernel_size)) / (kernel_size ** 2)
-
+# # Definir el kernel del filtro promediador
+# kernel_size = 12
+# #Filtro promediador
+# kernel = np.ones((kernel_size, kernel_size)) / (kernel_size ** 2)
 
 # def testMethodFromModelPY(path=''):
+    
 
-#     image_array = np.array(img)
-#     size = 0
+#     # quantity = np.random.randint(2,8)
 
-#     positionx = np.random.randint(100,1900)
-#     positiony = np.random.randint(100,900)
-        
-#     image_array[:,positionx-size:positionx+size,:] = [225,0,0] 
-#     image_array[positiony-size:positiony+size,:,:] = [0,255,0] 
+#     # for i in range(quantity):
+#     #     size = np.random.randint(0,100)
+#     #     positionx = np.random.randint(100,1900)
+#     #     positiony = np.random.randint(100,900)
+#     #     colors = np.random.randint(100,255)
+#     #     image_array[:,positionx-size:positionx+size,:] = [colors,0,0] 
+#     #     image_array[positiony-size:positiony+size,:,:] = [0,colors,0] 
+
+
+#     smoothed_image = np.zeros_like(noisy_image)
+#     for channel in range(imagen_array.shape[2]):
+#         for row in range(noisy_image.shape[0] - kernel_size + 1):
+#             for col in range(noisy_image.shape[1] - kernel_size + 1):
+#                 # Obtener la submatriz para el canal actual
+#                 subMatrix = noisy_image[row:row+kernel_size, col:col+kernel_size, channel]
+#                 # Aplicar el filtro promediador
+#                 smoothed_image[row + 1, col + 1, channel] = np.sum(subMatrix * kernel)
 
 #     fig, ax = plt.subplots()
-#     ax.imshow(image_array)
+#     ax.imshow(noisy_image.astype(np.uint8))
 #     ax.axis('off')  # Hide axes
 #     return fig
 
-def testMethodFromModelPY(path=''):
+
+
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy as np
+imagen = Image.open("maxWallpaper.jpg")
+imagen_array = np.array(imagen)
     
+def apply_smooth_filter(image_array):
+    # Definir el kernel del filtro promediador
+    kernel_size = 12
+    # Filtro promediador
+    kernel = np.ones((kernel_size, kernel_size)) / (kernel_size ** 2)
 
-    # quantity = np.random.randint(2,8)
-
-    # for i in range(quantity):
-    #     size = np.random.randint(0,100)
-    #     positionx = np.random.randint(100,1900)
-    #     positiony = np.random.randint(100,900)
-    #     colors = np.random.randint(100,255)
-    #     image_array[:,positionx-size:positionx+size,:] = [colors,0,0] 
-    #     image_array[positiony-size:positiony+size,:,:] = [0,colors,0] 
-
-
-    smoothed_image = np.zeros_like(noisy_image)
-    for channel in range(imagen_array.shape[2]):
-        for row in range(noisy_image.shape[0] - kernel_size + 1):
-            for col in range(noisy_image.shape[1] - kernel_size + 1):
+    smoothed_image = np.zeros_like(image_array)
+    for channel in range(image_array.shape[2]):
+        for row in range(image_array.shape[0] - kernel_size + 1):
+            for col in range(image_array.shape[1] - kernel_size + 1):
                 # Obtener la submatriz para el canal actual
-                subMatrix = noisy_image[row:row+kernel_size, col:col+kernel_size, channel]
+                subMatrix = image_array[row:row+kernel_size, col:col+kernel_size, channel]
                 # Aplicar el filtro promediador
                 smoothed_image[row + 1, col + 1, channel] = np.sum(subMatrix * kernel)
+
+    return smoothed_image
+
+def defaultMethodFromModelPY():
+    # Load image
+    
+    fig, ax = plt.subplots()
+    ax.imshow(imagen_array.astype(np.uint8))
+    ax.axis('off')  # Hide axes
+    return fig
+
+
+
+def testMethodFromModelPY():
+    
+
+    # Definir el ruido tipo speckle
+    noise = np.random.normal(0, 0.5, size=imagen_array.shape)
+
+    # Agregar el ruido a la imagen
+    noisy_image = imagen_array + imagen_array * noise
+
+    # Apply smooth filter
+    smoothed_image = apply_smooth_filter(noisy_image)
 
     fig, ax = plt.subplots()
     ax.imshow(noisy_image.astype(np.uint8))
     ax.axis('off')  # Hide axes
     return fig
+
 
 
 # def testMethodFromModelPY2(path=''):

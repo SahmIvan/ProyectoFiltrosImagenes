@@ -7,15 +7,42 @@
 # import base64
 # import io
 
+# from django.shortcuts import render
+# from Aplicacion import models
+# import base64
+# import io
+
+# def test_view(request):
+#     output = models.testMethodFromModelPY()
+    
+#     buffer = io.BytesIO()
+#     output.savefig(buffer, format='png')
+#     buffer.seek(0)
+#     image_png = buffer.getvalue()
+#     buffer.close()
+#     graphic = base64.b64encode(image_png).decode('utf-8')
+
+#     return render(request, 'index.html', {'graphic': graphic})
+
+
 from django.shortcuts import render
 from Aplicacion import models
 import base64
 import io
 
 def test_view(request):
-    output = models.testMethodFromModelPY()
-    
-    
+    # Check if a filter is selected
+    filter_name = request.GET.get('filter', None)
+
+    # Apply the selected filter or default filter
+    if filter_name == 'smooth':
+        output = models.testMethodFromModelPY()
+    elif filter_name == 'reset':
+        output = models.defaultMethodFromModelPY()
+    else:
+        # Default behavior (no filter applied)
+        output = models.defaultMethodFromModelPY()
+
     buffer = io.BytesIO()
     output.savefig(buffer, format='png')
     buffer.seek(0)

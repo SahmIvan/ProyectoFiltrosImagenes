@@ -1,12 +1,38 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Display</title>
+    <title>Image Filters</title>
 </head>
 <body>
     <div>
-        <img src="data:image/png;base64,{{ graphic }}" alt="Generated Image">
+    
+    <!-- Botones Para Filtro -->
+        <button onclick="applyFilter('smooth')">Smooth Filter</button>
+        <button onclick="applyFilter('reset')">None</button>
+        
     </div>
+    <div>
+        <img id="image" src="data:image/png;base64,{{ graphic }}" alt="Filtered Image">
+    </div>
+
+    <script>
+        function applyFilter(filterName) {
+            // Llama al filtro que se selecciona en el boton
+            fetch(`/Aplicacion/?filter=${filterName}`)
+                .then(response => response.text())
+                .then(html => {
+                    
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newGraphic = doc.getElementById('image').getAttribute('src');
+    
+                    
+                    document.getElementById('image').src = newGraphic;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
