@@ -36,12 +36,30 @@ def test_view(request):
 
     # aplica el filtro seleccionado
     if filter_name == 'smooth':
-        output = models.testMethodFromModelPY()
+        output = models.suavizado1()
     elif filter_name == 'reset':
-        output = models.defaultMethodFromModelPY()
+        output = models.default_image()
+    elif filter_name == 'ruido1':
+        output = models.ruido1()
+    elif filter_name == 'ruido2':
+        output = models.ruido2()
+    elif filter_name == 'ruido3':
+        output = models.ruido3()
+    elif filter_name == 'ruido4':
+        output = models.ruido4()
+    elif filter_name == 'ruido5':
+        output = models.ruido5()
+    elif filter_name == 'ruido6':
+        output = models.ruido6()
+    elif filter_name == 'ruido7':
+        output = models.ruido7()
+    elif filter_name == 'ruido8':
+        output = models.ruido8()
+    elif filter_name == 'ruido9':
+        output = models.ruido9()
     else:
         # Valor predeterminado al cargar la pagina
-        output = models.defaultMethodFromModelPY()
+        output = models.default_image()
 
     buffer = io.BytesIO()
     output.savefig(buffer, format='png')

@@ -75,54 +75,124 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
 imagen = Image.open("maxWallpaper.jpg")
-imagen_array = np.array(imagen)
+image_array = np.array(imagen)
     
-def apply_smooth_filter(image_array):
-    # Definir el kernel del filtro promediador
-    kernel_size = 12
-    # Filtro promediador
-    kernel = np.ones((kernel_size, kernel_size)) / (kernel_size ** 2)
-
+def apply_filter(noisy_image, kernel):
     smoothed_image = np.zeros_like(image_array)
     for channel in range(image_array.shape[2]):
-        for row in range(image_array.shape[0] - kernel_size + 1):
-            for col in range(image_array.shape[1] - kernel_size + 1):
-                # Obtener la submatriz para el canal actual
-                subMatrix = image_array[row:row+kernel_size, col:col+kernel_size, channel]
-                # Aplicar el filtro promediador
-                smoothed_image[row + 1, col + 1, channel] = np.sum(subMatrix * kernel)
+        for row in range(image_array.shape[0] - kernel.shape[0] + 1):
+            for col in range(image_array.shape[1] - kernel.shape[1] + 1):
+                sub_matrix = noisy_image[row:row+kernel.shape[0], col:col+kernel.shape[1], channel]
+                smoothed_image[row + 1, col + 1, channel] = np.sum(sub_matrix * kernel)
+    fig, ax = plt.subplots()
+    ax.imshow(smoothed_image.astype(np.uint8))
+    ax.axis('off')
+    return fig
 
-    return smoothed_image
-
-def defaultMethodFromModelPY():
+def default_image():
     # Load image
     
     fig, ax = plt.subplots()
-    ax.imshow(imagen_array.astype(np.uint8))
+    ax.imshow(image_array.astype(np.uint8))
     ax.axis('off')  # Hide axes
     return fig
 
-
-
-def testMethodFromModelPY():
+def suavizado1():
+    kernel_size = 12
+    kernel = np.ones((kernel_size, kernel_size)) / (kernel_size ** 2)
+    noise = np.random.normal(0, 10, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
     
+    return apply_filter(noisy_image, kernel)
 
-    # Definir el ruido tipo speckle
-    noise = np.random.normal(0, 0.5, size=imagen_array.shape)
+def ruido1():
+    kernel = np.array([
+        [-2, -1, 0],
+        [-1, 1, 1],
+        [0, 1, 2]
+    ])
+    return apply_filter(image_array, kernel)
 
-    # Agregar el ruido a la imagen
-    noisy_image = imagen_array + imagen_array * noise
+def ruido2():
+    kernel = np.ones((3, 3)) 
+    kernel[1:-1, 1:-1] = 0.1
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
 
-    # Apply smooth filter
-    smoothed_image = apply_smooth_filter(noisy_image)
+def ruido3():
+    kernel = np.array([
+        [-1, -2, -1],
+        [0, 0, 0],
+        [1, 2, 1]
+    ])
+    noise = np.random.normal(0, 0.005, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
 
-    fig, ax = plt.subplots()
-    ax.imshow(noisy_image.astype(np.uint8))
-    ax.axis('off')  # Hide axes
-    return fig
+def ruido4():
+    kernel = np.array([
+        [-1, -1, -1],
+        [-1, 9, -1],
+        [-1, -1, -1]
+    ])
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
 
+def ruido5():
+    kernel = np.array([
+        [-5, -4, 1],
+        [-2, 2, 5],
+        [2, 4, 7]
+    ])
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
 
+def ruido6():
+    kernel = np.array([
+        [-1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1],
+        [-1, -1, 25, -1, -1],
+        [-1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1]
+    ]) / 9
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
 
+def ruido7():
+    kernel = np.array([
+        [-1, -1, 0],
+        [-1, 2, 1],
+        [0, 1, 1]
+    ])
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
+
+def ruido8():
+    kernel = np.array([
+        [-1, -2, -1, -1, -1],
+        [-1, -2, -1, -1, -1],
+        [-1, -2, -1, -1, -1],
+        [-1, -2, -1, -1, -1],
+        [-1, -2, -1, -1, -1]
+    ])
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
+
+def ruido9():
+    kernel = np.array([
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
+    ])
+    noise = np.random.normal(0, 0.01, size=image_array.shape)
+    noisy_image = image_array + image_array * noise
+    return apply_filter(noisy_image, kernel)
 # def testMethodFromModelPY2(path=''):
     
 
